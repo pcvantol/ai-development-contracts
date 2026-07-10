@@ -20,6 +20,11 @@ The intended startup order is:
 3. current Epic or Phase context;
 4. implementation prompt.
 
+For Verification Program work, continue from this general bootstrap to:
+
+- `BOOTSTRAP_CODEX_VERIFICATION.md`
+- `PROMPT_INDEX.md`
+
 ## Required Startup Flow
 
 A new Codex session must:
@@ -84,6 +89,10 @@ until the user gives an explicit phase or implementation prompt.
 
 For future epics, read the current epic context, any phase template or phase
 prompt, and relevant completion/review notes before making changes.
+
+For Verification Program phases, read `BOOTSTRAP_CODEX_VERIFICATION.md` and
+follow the active phase in `PROMPT_INDEX.md`. The verification bootstrap is the
+durable replacement for large chat-only verification prompts.
 
 ## Readiness Summary Template
 
