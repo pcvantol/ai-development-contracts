@@ -17,8 +17,9 @@ The intended startup order is:
 
 1. platform bootstrap;
 2. repository-local `AGENTS.md`;
-3. current Epic or Phase context;
-4. implementation prompt.
+3. Meta Engineering guidance;
+4. current Epic or Phase context;
+5. implementation prompt.
 
 For Verification Program work, continue from this general bootstrap to:
 
@@ -31,13 +32,21 @@ A new Codex session must:
 
 1. Read this document.
 2. Read the local repository `AGENTS.md`.
-3. Read the canonical DJConnect Foundation in `pcvantol/djconnect`.
-4. Identify the current repository role.
-5. Identify what the repository owns and does not own.
-6. Identify the current Epic or Phase if applicable.
-7. Read relevant local docs.
-8. Return a readiness summary.
-9. Wait for the next implementation prompt.
+3. Read `docs/meta/README.md`.
+4. Read the canonical DJConnect Foundation in `pcvantol/djconnect`.
+5. Identify the current repository role.
+6. Identify what the repository owns and does not own.
+7. Identify the current Epic or Phase if applicable.
+8. Read relevant local docs.
+9. Return a readiness summary.
+10. Wait for the next implementation prompt.
+
+## Meta Engineering
+
+Read `docs/meta/README.md`, then continue with repository-specific guidance.
+
+The Meta Engineering Foundation defines how humans and AI agents collaborate,
+where durable engineering knowledge belongs and how AI agents should operate.
 
 ## Canonical Foundation Files
 
@@ -83,7 +92,8 @@ direction.
 Implementation work should reference `docs/implementation/` in the canonical
 Home Assistant repository.
 
-For Epic 3, read `docs/implementation/epic3/00-context.md` when present and the
+For Epic work, read the current epic context or
+`docs/implementation/epic-template/00-context.md` when creating one, plus the
 active phase prompt supplied by the user. Do not jump phases. Do not implement
 until the user gives an explicit phase or implementation prompt.
 
