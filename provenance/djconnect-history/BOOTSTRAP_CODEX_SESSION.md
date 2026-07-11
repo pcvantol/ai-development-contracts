@@ -17,11 +17,12 @@ The intended startup order is:
 
 1. platform bootstrap;
 2. repository-local `AGENTS.md`;
-3. Meta Engineering guidance;
-4. canonical references;
-5. repository status and prompt index;
-6. current Epic or Phase context;
-7. implementation prompt.
+3. Platform Strategy;
+4. Meta Engineering guidance;
+5. canonical references;
+6. repository status and prompt index;
+7. current Epic or Phase context;
+8. implementation prompt.
 
 For Verification Program work, continue from this general bootstrap to:
 
@@ -34,18 +35,19 @@ A new Codex session must:
 
 1. Read this document.
 2. Read the local repository `AGENTS.md`.
-3. Read `docs/meta/README.md`.
-4. Read `CANONICAL_REFERENCES.md`.
-5. Identify the current repository role.
-6. Identify what the repository owns and does not own.
-7. Read `REPOSITORY_STATUS.md`.
-8. Read `PROMPT_INDEX.md` when the work is phase-driven.
-9. Read the canonical DJConnect Foundation in `pcvantol/djconnect` only as
+3. Read `PLATFORM_STRATEGY.md`.
+4. Read `docs/meta/README.md`.
+5. Read `CANONICAL_REFERENCES.md`.
+6. Identify the current repository role.
+7. Identify what the repository owns and does not own.
+8. Read `REPOSITORY_STATUS.md`.
+9. Read `PROMPT_INDEX.md` when the work is phase-driven.
+10. Read the canonical DJConnect Foundation in `pcvantol/djconnect` only as
    needed for the current task, following `CANONICAL_REFERENCES.md`.
-10. Identify the current Epic or Phase if applicable.
-11. Read relevant local docs.
-12. Return a readiness summary.
-13. Wait for the next implementation prompt.
+11. Identify the current Epic or Phase if applicable.
+12. Read relevant local docs.
+13. Return a readiness summary.
+14. Wait for the next implementation prompt.
 
 ## Meta Engineering
 
@@ -59,6 +61,7 @@ where durable engineering knowledge belongs and how AI agents should operate.
 Read these files from the canonical Home Assistant repository,
 `pcvantol/djconnect`, when platform context is required:
 
+- `PLATFORM_STRATEGY.md`
 - `FOUNDATION_INDEX.md`
 - `DJCONNECT_CONSTITUTION.md`
 - `PRODUCT_VISION.md`
