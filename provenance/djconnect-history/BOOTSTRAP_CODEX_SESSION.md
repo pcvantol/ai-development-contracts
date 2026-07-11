@@ -106,6 +106,19 @@ Repository phase state starts in `REPOSITORY_STATUS.md`. Platform verification
 phase navigation starts in `PROMPT_INDEX.md`. Implementation work should
 reference `docs/implementation/` in the canonical Home Assistant repository.
 
+Current platform lifecycle state:
+
+```text
+Platform Architecture
+  -> Platform Qualification
+  -> Platform Baseline
+  -> Business-first Engineering
+```
+
+The platform is currently in Platform Qualification. Architecture is frozen
+with decision `ARCHITECTURE_FROZEN`; Platform Baseline v1.0 is not yet
+certified; Business-first Engineering has not yet started.
+
 For Epic work, read the current epic context or
 `docs/implementation/epic-template/00-context.md` when creating one, plus the
 active phase prompt supplied by the user. Do not jump phases. Do not implement
