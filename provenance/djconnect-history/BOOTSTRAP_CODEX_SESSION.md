@@ -18,8 +18,10 @@ The intended startup order is:
 1. platform bootstrap;
 2. repository-local `AGENTS.md`;
 3. Meta Engineering guidance;
-4. current Epic or Phase context;
-5. implementation prompt.
+4. canonical references;
+5. repository status and prompt index;
+6. current Epic or Phase context;
+7. implementation prompt.
 
 For Verification Program work, continue from this general bootstrap to:
 
@@ -33,13 +35,17 @@ A new Codex session must:
 1. Read this document.
 2. Read the local repository `AGENTS.md`.
 3. Read `docs/meta/README.md`.
-4. Read the canonical DJConnect Foundation in `pcvantol/djconnect`.
+4. Read `CANONICAL_REFERENCES.md`.
 5. Identify the current repository role.
 6. Identify what the repository owns and does not own.
-7. Identify the current Epic or Phase if applicable.
-8. Read relevant local docs.
-9. Return a readiness summary.
-10. Wait for the next implementation prompt.
+7. Read `REPOSITORY_STATUS.md`.
+8. Read `PROMPT_INDEX.md` when the work is phase-driven.
+9. Read the canonical DJConnect Foundation in `pcvantol/djconnect` only as
+   needed for the current task, following `CANONICAL_REFERENCES.md`.
+10. Identify the current Epic or Phase if applicable.
+11. Read relevant local docs.
+12. Return a readiness summary.
+13. Wait for the next implementation prompt.
 
 ## Meta Engineering
 
@@ -74,6 +80,10 @@ When runtime evolution or long-term platform shape is relevant, also read:
 
 - `docs/research/R0_RUNTIME_INDEPENDENCE.md`
 
+`CANONICAL_REFERENCES.md` is the durable repository-local map for these
+references and for the ownership boundary between canonical platform guidance
+and repository-local implementation guidance.
+
 ## Repository-Local Instructions
 
 `AGENTS.md` remains authoritative for repository-specific implementation
@@ -89,8 +99,9 @@ direction.
 
 ## Current Epic / Phase
 
-Implementation work should reference `docs/implementation/` in the canonical
-Home Assistant repository.
+Repository phase state starts in `REPOSITORY_STATUS.md`. Platform verification
+phase navigation starts in `PROMPT_INDEX.md`. Implementation work should
+reference `docs/implementation/` in the canonical Home Assistant repository.
 
 For Epic work, read the current epic context or
 `docs/implementation/epic-template/00-context.md` when creating one, plus the
@@ -103,6 +114,18 @@ prompt, and relevant completion/review notes before making changes.
 For Verification Program phases, read `BOOTSTRAP_CODEX_VERIFICATION.md` and
 follow the active phase in `PROMPT_INDEX.md`. The verification bootstrap is the
 durable replacement for large chat-only verification prompts.
+
+## Repository Status
+
+`REPOSITORY_STATUS.md` records the repository role, current phase, blocking
+dependencies, current prompt, completion report, last qualification and current
+SHA for this repository only. It must not duplicate the platform roadmap.
+
+## Deprecated Chat Bootstrap
+
+`CHAT_BOOTSTRAP.md` is deprecated and must not be used as a clean-session
+entrypoint. If historical references still mention it, they should treat it as
+a pointer back to this bootstrap.
 
 ## Readiness Summary Template
 
