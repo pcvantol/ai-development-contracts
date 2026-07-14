@@ -12,6 +12,12 @@ Every engineering prompt produces exactly one complete, copy-pasteable prompt
 inside exactly one code block. Required implementation must be inside that
 prompt, not scattered around it.
 
+Prompts must begin with the canonical initialization sequence in
+`PROMPT_INITIALIZATION.md`. They must instruct Codex to determine the latest
+merged increment, current repository truth and current engineering status from
+synchronized current main. They must not assert those facts from conversation
+context, examples or historical planning.
+
 ## Lifecycle
 
 `PROMPT_INDEX.md` is the lifecycle authority. A canonical prompt progresses:
