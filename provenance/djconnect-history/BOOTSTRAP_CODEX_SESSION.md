@@ -15,14 +15,15 @@ notes, recent release state and durable architecture guidance.
 
 The intended startup order is:
 
-1. platform bootstrap;
-2. repository-local `AGENTS.md`;
-3. Platform Strategy;
-4. Meta Engineering guidance;
-5. canonical references;
-6. repository status and prompt index;
-7. current Epic or Phase context;
-8. implementation prompt.
+1. repository-state bootstrap (`BOOTSTRAP.md`);
+2. platform bootstrap;
+3. repository-local `AGENTS.md`;
+4. Platform Strategy;
+5. Meta Engineering guidance;
+6. canonical references;
+7. repository status and prompt index;
+8. current Epic or Phase context;
+9. implementation prompt.
 
 For Verification Program work, continue from this general bootstrap to:
 
@@ -33,21 +34,22 @@ For Verification Program work, continue from this general bootstrap to:
 
 A new Codex session must:
 
-1. Read this document.
-2. Read the local repository `AGENTS.md`.
-3. Read `PLATFORM_STRATEGY.md`.
-4. Read `docs/meta/README.md`.
-5. Read `CANONICAL_REFERENCES.md`.
-6. Identify the current repository role.
-7. Identify what the repository owns and does not own.
-8. Read `REPOSITORY_STATUS.md`.
-9. Read `PROMPT_INDEX.md` when the work is phase-driven.
-10. Read the canonical DJConnect Foundation in `pcvantol/djconnect` only as
+1. Read `BOOTSTRAP.md` and verify its repository-state reading order.
+2. Read this document.
+3. Read the local repository `AGENTS.md`.
+4. Read `PLATFORM_STRATEGY.md`.
+5. Read `docs/meta/README.md`.
+6. Read `CANONICAL_REFERENCES.md`.
+7. Identify the current repository role.
+8. Identify what the repository owns and does not own.
+9. Read `REPOSITORY_STATUS.md`.
+10. Read `PROMPT_INDEX.md` when the work is phase-driven.
+11. Read the canonical DJConnect Foundation in `pcvantol/djconnect` only as
    needed for the current task, following `CANONICAL_REFERENCES.md`.
-11. Identify the current Epic or Phase if applicable.
-12. Read relevant local docs.
-13. Return a readiness summary.
-14. Wait for the next implementation prompt.
+12. Identify the current Epic or Phase if applicable.
+13. Read relevant local docs.
+14. Return a readiness summary.
+15. Wait for the next implementation prompt.
 
 ## Meta Engineering
 
