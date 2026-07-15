@@ -29,9 +29,18 @@ Draft -> Active -> Completed -> Deprecated -> Archived
 Only one prompt may be Active. A Completed prompt is never reactivated; new
 scope becomes a new Draft after the predecessor has a reviewable pull request.
 
+## Post-merge engineering state
+
+Prompt lifecycle is distinct from engineering lifecycle. The latter is
+`REVIEWABLE_FROZEN`, `MERGED_UNRECONCILED` or `MERGED_RECONCILED`, as defined
+by `ENGINEERING_METHOD.md`. The next increment verifies merge evidence from
+GitHub and current main, then reconciles a verified `MERGED_UNRECONCILED`
+predecessor before substantive engineering without altering Prompt History.
+
 ## Freeze and deferred work
 
-The freeze point is the existence of the reviewable pull request. After it,
+The freeze point is the existence of the reviewable pull request; its state is
+`REVIEWABLE_FROZEN`. After it,
 implementation is frozen. PR review may add only work necessary to complete
 the original objective. Any new objective is recorded, prioritized and
 recommended as deferred work for a subsequent increment; it is never silently

@@ -7,6 +7,9 @@ Every engineering prompt follows this exact initialization sequence:
 ```text
 Repository Synchronization
   -> Current Main Verification
+  -> Previous Pull Request Verification
+  -> Post-Merge State Classification
+  -> Rolling State Reconciliation
   -> Canonical Repository Read
   -> Implementation Reality Check
   -> Engineering Planning
@@ -19,8 +22,16 @@ Current Main Verification confirms the checked-out branch, `HEAD`, upstream
 tracking branch, fast-forward status, working-tree cleanliness and repository
 cleanliness. A failure stops the prompt.
 
-Only after successful synchronization and current-main verification, read and
-verify:
+Previous Pull Request Verification uses objective GitHub and Git evidence for
+the predecessor merge state and commit, current-main containment and archived
+Prompt History. Classify the state under `ENGINEERING_METHOD.md`. For
+`MERGED_UNRECONCILED`, reconcile `ENGINEERING_STATUS.md`,
+`REPOSITORY_STATUS.md`, `MANAGEMENT_SUMMARY.md` and `PROMPT_INDEX.md` before
+substantive work; never rewrite Prompt History. Unknown merge candidates,
+missing history, divergence and stale main remain terminal.
+
+Only after successful synchronization, verification and reconciliation where
+required, read and verify:
 
 1. current branch, current `main`, repository status and implementation reality;
 2. `ENGINEERING_STATUS.md`, `REPOSITORY_STATUS.md` and `MANAGEMENT_SUMMARY.md`;
