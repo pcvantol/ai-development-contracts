@@ -7,6 +7,7 @@ Every engineering prompt follows this exact initialization sequence:
 ```text
 Repository Synchronization
   -> Current Main Verification
+  -> Development Machine Qualification
   -> Previous Pull Request Verification
   -> Post-Merge State Classification
   -> Rolling State Reconciliation
@@ -21,6 +22,20 @@ Repository Synchronization means `git switch main` followed by
 Current Main Verification confirms the checked-out branch, `HEAD`, upstream
 tracking branch, fast-forward status, working-tree cleanliness and repository
 cleanliness. A failure stops the prompt.
+
+## Development Machine Qualification
+
+Before accepting or performing a contentful tracked-repository mutation, obtain
+the current-session local desired-state verification summary from the machine
+that will do the work. Continue with mutations only when it records
+`READY FOR DJCONNECT DEVELOPMENT` and a zero exit code. Do not infer this from
+conversation history, another host, a prior session or partial copied output.
+
+When the gate is not satisfied, limit the prompt to read-only inspection and
+report the required verification evidence. The exact verification command,
+evidence format and the only narrow exceptions are defined in
+`BOOTSTRAP_CODEX_SESSION.md`; those exceptions bypass this gate only, never any
+other initialization or engineering requirement.
 
 Previous Pull Request Verification uses objective GitHub and Git evidence for
 the predecessor merge state and commit, current-main containment and archived
