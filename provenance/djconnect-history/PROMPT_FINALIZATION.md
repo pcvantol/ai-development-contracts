@@ -20,7 +20,12 @@ Finalization must:
 6. create, validate and merge exactly one Finalization pull request.
 
 The Finalization pull request establishes its own `REVIEWABLE_FROZEN` freeze
-point. Its merge restores `MERGED_RECONCILED`; only then may the next capability
+point. Its merge restores Repository State `MERGED_RECONCILED`. Then execute
+the mandatory Workspace Cleanup procedure in `ENGINEERING_METHOD.md`: check
+out and synchronize canonical `main`, verify the completed implementation PR,
+safely remove only its fully merged local implementation branch, prune obsolete
+remote-tracking references and issue the deterministic cleanup report. Only
+`MERGED_RECONCILED` plus `WORKSPACE_READY` permit the next capability to
 start. Do not introduce production scope during Finalization.
 
 A reviewable pull request cannot truthfully record its own future merge. The

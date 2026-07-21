@@ -32,7 +32,8 @@ For `MERGED_UNRECONCILED`, only the dedicated Finalization increment may
 reconcile `ENGINEERING_STATUS.md`, `REPOSITORY_STATUS.md`,
 `MANAGEMENT_SUMMARY.md` and `PROMPT_INDEX.md`. Prompt History remains
 immutable. Production implementation waits for its merged Finalization to
-restore `MERGED_RECONCILED`. Then follow `BOOTSTRAP.md`, perform the
+restore `MERGED_RECONCILED` and its mandatory Workspace Cleanup to establish
+`WORKSPACE_READY`. Then follow `BOOTSTRAP.md`, perform the
 implementation-reality check in `PROMPT_INITIALIZATION.md`, and only then plan
 work. Current synchronized main always overrides conversation history,
 historical prompts, assumptions and prior planning.

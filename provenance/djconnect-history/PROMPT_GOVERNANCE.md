@@ -35,8 +35,10 @@ Prompt lifecycle is distinct from engineering lifecycle. The latter is
 `REVIEWABLE_FROZEN`, `MERGED_UNRECONCILED` or `MERGED_RECONCILED`, as defined
 by `ENGINEERING_METHOD.md`. A merged implementation enters
 `MERGED_UNRECONCILED`; only its dedicated Finalization may proceed from that
-state. The next production capability begins only after Finalization has merged
-and restored `MERGED_RECONCILED`, without altering Prompt History.
+state. After Finalization merges, its mandatory Workspace Cleanup establishes
+the independent `WORKSPACE_READY` state. The next production capability begins
+only with `MERGED_RECONCILED` and `WORKSPACE_READY`, without altering Prompt
+History.
 
 ## Freeze and deferred work
 
