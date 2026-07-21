@@ -28,6 +28,9 @@ remote-tracking references and issue the deterministic cleanup report. Only
 `MERGED_RECONCILED` plus `WORKSPACE_READY` permit the next capability to
 start. Do not introduce production scope during Finalization.
 
+For a squash merge, apply the canonical Squash-Merge Cleanup Exception rather
+than treating non-ancestry alone as a blocker.
+
 A reviewable pull request cannot truthfully record its own future merge. The
 following prompt verifies the Finalization merge and confirms the restored
 `MERGED_RECONCILED` state without rewriting immutable Prompt History.
