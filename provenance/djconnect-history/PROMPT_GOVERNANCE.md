@@ -39,7 +39,8 @@ state. After Finalization merges, its mandatory Workspace Cleanup establishes
 the independent `WORKSPACE_READY` state. The next production capability begins
 only with `MERGED_RECONCILED` and `WORKSPACE_READY`, without altering Prompt
 History. The canonical cleanup contract permits verified squash-merged branches
-through its deterministic patch-equivalence exception.
+through its deterministic patch-equivalence exception and verified stale
+Finalization branches through its separate commit-delta exception.
 
 ## Freeze and deferred work
 

@@ -31,6 +31,9 @@ start. Do not introduce production scope during Finalization.
 For a squash merge, apply the canonical Squash-Merge Cleanup Exception rather
 than treating non-ancestry alone as a blocker.
 
+For a stale Finalization branch, use the Finalization Branch Delta Exception
+only when every branch-only commit passes its canonical reverse-apply check.
+
 A reviewable pull request cannot truthfully record its own future merge. The
 following prompt verifies the Finalization merge and confirms the restored
 `MERGED_RECONCILED` state without rewriting immutable Prompt History.
