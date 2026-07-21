@@ -2,7 +2,7 @@
 
 **Status:** Canonical operational contract
 
-Every engineering prompt follows this exact initialization sequence:
+Every engineering prompt follows this exact `PRE-FLIGHT` sequence:
 
 ```text
 Repository Synchronization
@@ -13,7 +13,7 @@ Repository Synchronization
   -> Rolling State Reconciliation
   -> Canonical Repository Read
   -> Implementation Reality Check
-  -> Engineering Planning
+  -> GO / NO-GO Decision
 ```
 
 Repository Synchronization means `git switch main` followed by
@@ -40,9 +40,9 @@ other initialization or engineering requirement.
 Previous Pull Request Verification uses objective GitHub and Git evidence for
 the predecessor merge state and commit, current-main containment and archived
 Prompt History. Classify the state under `ENGINEERING_METHOD.md`. For
-`MERGED_UNRECONCILED`, reconcile `ENGINEERING_STATUS.md`,
-`REPOSITORY_STATUS.md`, `MANAGEMENT_SUMMARY.md` and `PROMPT_INDEX.md` before
-substantive work; never rewrite Prompt History. Unknown merge candidates,
+`MERGED_UNRECONCILED`, only the dedicated Finalization increment may reconcile
+`ENGINEERING_STATUS.md`, `REPOSITORY_STATUS.md`, `MANAGEMENT_SUMMARY.md` and
+`PROMPT_INDEX.md`; never rewrite Prompt History. Unknown merge candidates,
 missing history, divergence and stale main remain terminal.
 
 Only after successful synchronization, verification and reconciliation where
@@ -60,6 +60,12 @@ Then perform the implementation-reality check: inspect requested functionality,
 validation, qualification, documentation and existing implementation. If the
 outcome already exists, do not reimplement it; close only remaining evidenced
 gaps.
+
+Confirm the requested capability remains pending, has no equivalent merged
+implementation and is not superseded by an architecture amendment. Verify the
+required validation baseline and current roadmap, architecture and maturity
+records. End Pre-Flight with `GO` only from `MERGED_RECONCILED`; otherwise issue
+`NO-GO` and do not make production changes.
 
 If any observed repository fact differs from the expected state, stop. Correct
 the repository state or planning records before work proceeds. Historical

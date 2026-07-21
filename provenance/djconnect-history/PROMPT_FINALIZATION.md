@@ -1,26 +1,31 @@
-# Prompt Finalization
+# Capability Finalization
 
 **Status:** Canonical operational contract
 
-Before creating the one reviewable pull request for an increment:
+Finalization is the mandatory governance-only increment after a production
+implementation has merged. It begins only after objective GitHub and current
+main evidence classifies that implementation as `MERGED_UNRECONCILED`.
+Production work must not begin from this temporary state.
 
-1. validate the scoped change and retain objective evidence;
+Finalization must:
+
+1. verify the merged implementation and retain objective validation evidence;
 2. update `ENGINEERING_STATUS.md`, `REPOSITORY_STATUS.md`,
    `MANAGEMENT_SUMMARY.md` and `PROMPT_INDEX.md`;
-3. archive one immutable record in `docs/history/prompts/` using its README
-   contract; and
-4. record newly discovered out-of-scope work as deferred work with a
-   recommended next prompt.
+3. archive the immutable Prompt History record for the merged implementation
+   when it is not already recorded, using its README contract;
+4. reconcile applicable roadmap and governance status, and record newly
+   discovered deferred work with a recommended next prompt;
+5. run applicable governance and repository-bootstrap validation; and
+6. create, validate and merge exactly one Finalization pull request.
 
-The reviewable pull request establishes `REVIEWABLE_FROZEN` and is the freeze
-point. Do not introduce new scope after that point. The branch must be clean
-after all scoped changes are committed; human merge remains a separate,
-external governance decision.
+The Finalization pull request establishes its own `REVIEWABLE_FROZEN` freeze
+point. Its merge restores `MERGED_RECONCILED`; only then may the next capability
+start. Do not introduce production scope during Finalization.
 
 A reviewable pull request cannot truthfully record its own future merge. The
-next increment verifies the human merge, classifies a stale rolling state as
-`MERGED_UNRECONCILED`, and reconciles it without rewriting immutable Prompt
-History.
+following prompt verifies the Finalization merge and confirms the restored
+`MERGED_RECONCILED` state without rewriting immutable Prompt History.
 
 The final management summary records the decision, branch, commit SHA, pull
 request, validation, updated governance documents, repository-hygiene result

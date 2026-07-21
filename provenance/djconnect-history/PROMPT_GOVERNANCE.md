@@ -33,9 +33,10 @@ scope becomes a new Draft after the predecessor has a reviewable pull request.
 
 Prompt lifecycle is distinct from engineering lifecycle. The latter is
 `REVIEWABLE_FROZEN`, `MERGED_UNRECONCILED` or `MERGED_RECONCILED`, as defined
-by `ENGINEERING_METHOD.md`. The next increment verifies merge evidence from
-GitHub and current main, then reconciles a verified `MERGED_UNRECONCILED`
-predecessor before substantive engineering without altering Prompt History.
+by `ENGINEERING_METHOD.md`. A merged implementation enters
+`MERGED_UNRECONCILED`; only its dedicated Finalization may proceed from that
+state. The next production capability begins only after Finalization has merged
+and restored `MERGED_RECONCILED`, without altering Prompt History.
 
 ## Freeze and deferred work
 
@@ -46,4 +47,6 @@ the original objective. Any new objective is recorded, prioritized and
 recommended as deferred work for a subsequent increment; it is never silently
 included.
 
-The reusable prompt form is `docs/governance/PROMPT_TEMPLATE.md`.
+The reusable prompt form is `docs/governance/PROMPT_TEMPLATE.md`. Every
+implementation prompt uses its mandatory `PRE-FLIGHT`, `IMPLEMENTATION`,
+`VALIDATION` and `FINALIZATION` structure.
