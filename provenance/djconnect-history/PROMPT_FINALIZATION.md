@@ -33,6 +33,20 @@ either `none` or every detected stale local branch with its retained/removed
 disposition. Reporting is an audit only; it does not authorize deletion of an
 unrelated branch.
 
+After Workspace Cleanup, Codex must provide the Product & Platform Architect
+(ChatGPT) with a concise **two-PR management feedback summary** in the
+user-facing final response. It covers the two most recently merged pull
+requests, newest first, using current repository and GitHub evidence only. For
+each PR it states the product/governance outcome, material decisions and
+boundaries, validation or qualification state, and remaining risk, deferred
+work or next decision. It ends with the combined feedback that should guide the
+next architecture or product-planning assessment.
+
+This feedback is a reporting and decision-support artifact, not a substitute
+for canonical records. It must not invent product scope, architecture,
+ownership, priorities or implementation commitments; it must not expose
+secrets, private user data or raw diagnostic material.
+
 For a squash merge, apply the canonical Squash-Merge Cleanup Exception rather
 than treating non-ancestry alone as a blocker.
 
