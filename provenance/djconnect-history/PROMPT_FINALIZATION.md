@@ -28,6 +28,11 @@ remote-tracking references and issue the deterministic cleanup report. Only
 `MERGED_RECONCILED` plus `WORKSPACE_READY` permit the next capability to
 start. Do not introduce production scope during Finalization.
 
+The cleanup report must explicitly state the **stale local branch result**:
+either `none` or every detected stale local branch with its retained/removed
+disposition. Reporting is an audit only; it does not authorize deletion of an
+unrelated branch.
+
 For a squash merge, apply the canonical Squash-Merge Cleanup Exception rather
 than treating non-ancestry alone as a blocker.
 
@@ -39,5 +44,5 @@ following prompt verifies the Finalization merge and confirms the restored
 `MERGED_RECONCILED` state without rewriting immutable Prompt History.
 
 The final management summary records the decision, branch, commit SHA, pull
-request, validation, updated governance documents, repository-hygiene result
-and recommended next prompt.
+request, validation, updated governance documents, repository-hygiene result,
+stale local branch result and recommended next prompt.
