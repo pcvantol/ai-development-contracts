@@ -47,6 +47,15 @@ for canonical records. It must not invent product scope, architecture,
 ownership, priorities or implementation commitments; it must not expose
 secrets, private user data or raw diagnostic material.
 
+The same closing response must report the current **Product and Platform
+position**: the authoritative program/cycle, product-roadmap phase and active
+increment, plus the relevant Platform Evolution backlog state. It must then
+project the next three to five candidate items from the canonical roadmap and
+backlog. Every projected item names its source, current status and known gate.
+The projection is explicitly tentative: it may change through later evidence,
+assessment, dependency resolution or authorized reprioritization, and it does
+not authorize implementation.
+
 For a squash merge, apply the canonical Squash-Merge Cleanup Exception rather
 than treating non-ancestry alone as a blocker.
 
