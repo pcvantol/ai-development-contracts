@@ -19,6 +19,16 @@ Finalization must:
 5. run applicable governance and repository-bootstrap validation; and
 6. create, validate and merge exactly one Finalization pull request.
 
+Before pushing that pull request, perform the **Finalization pre-push consistency check**:
+derive the handoff once from merged-predecessor and
+canonical-backlog evidence, update the four rolling records as one set, verify
+the canonical Markdown PR link and exact predecessor merge commit in each
+record, and confirm every rendered Execution Horizon excludes the completed
+predecessor. Run `python3 -m unittest
+tests.test_capability_completion_lifecycle` and `git diff --check`. A failure
+blocks review until the records are reconciled; it does not authorize a CI,
+backlog or product change.
+
 The Finalization pull request establishes its own `REVIEWABLE_FROZEN` freeze
 point. Its merge restores Repository State `MERGED_RECONCILED`. Then execute
 the mandatory Workspace Cleanup procedure in `ENGINEERING_METHOD.md`: check
