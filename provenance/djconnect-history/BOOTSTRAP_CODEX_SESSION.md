@@ -49,8 +49,8 @@ A new Codex session must:
    If the canonical checkout or script is unavailable, record the machine as
    `UNVERIFIED`; do not infer readiness from conversation history.
    The check is valid only when it reports canonical developer-onboarding
-   package version `4.1.0`. Bootstrap and recovery fail closed before invoking
-   onboarding when that exact version is not present.
+package version `4.2.0`. Bootstrap and recovery fail closed before invoking
+onboarding when that exact version is not present.
 4. Read the local repository `AGENTS.md`.
 5. Read `PLATFORM_STRATEGY.md`.
 6. Read `docs/meta/README.md`.
