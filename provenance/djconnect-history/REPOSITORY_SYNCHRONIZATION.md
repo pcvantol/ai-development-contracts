@@ -7,10 +7,16 @@ From the intended repository, run:
 
 ```sh
 git switch main
-git pull --ff-only
+git fetch origin main
+git merge --ff-only origin/main
 ```
 
-Do not continue if either command fails.
+For Managed execution, `origin/main` is the sole authoritative source ref.
+The explicit fetch and fast-forward merge must not be replaced with `git pull`:
+local upstream, `branch.main.merge`, `pull.rebase` and `pull.ff` configuration
+must not select or change the synchronization source or strategy.
+
+Do not continue if any command fails.
 
 Immediately verify:
 
