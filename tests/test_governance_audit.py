@@ -51,6 +51,12 @@ class GovernanceAuditTests(unittest.TestCase):
     def test_deferred_exception_is_not_drift(self):
         record = {"repository":"ep","governance_class":"DEFERRED_MIGRATION","exception":{"reason":"review gate"}}
         self.assertEqual(AUDIT.audit_offline(record, Path("."))[0]["status"], "DEFERRED")
+    def test_expired_deferred_exception_is_drift(self):
+        record = {"repository":"ep","governance_class":"DEFERRED_MIGRATION","exception":{"reason":"review gate","expires_on":"2000-01-01"}}
+        self.assertEqual(AUDIT.audit_offline(record, Path("."))[0]["status"], "DRIFT")
+    def test_invalid_deferred_exception_is_unresolved(self):
+        record = {"repository":"ep","governance_class":"DEFERRED_MIGRATION","exception":{"reason":"review gate","expires_on":"not-a-date"}}
+        self.assertEqual(AUDIT.audit_offline(record, Path("."))[0]["status"], "UNRESOLVED")
     def test_distribution_requires_source_authority(self):
         temp = tempfile.TemporaryDirectory(); root = Path(temp.name); repo = root / "dist"; repo.mkdir(); (repo / "README.md").write_text("x"); (repo / "SECURITY.md").write_text("x")
         record = {"repository":"dist","governance_class":"PARENT_GOVERNED_SUPPORT","license_state":"INTENTIONALLY_NO_LICENSE","release_classes":[]}
@@ -67,6 +73,11 @@ class GovernanceAuditTests(unittest.TestCase):
             (repo / ".github/workflows/release-firmware.yml").write_text("uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1\n")
             record = {"repository":"djconnect-esp32","governance_class":"LIGHTWEIGHT_COMPONENT_MANAGED","license_state":"LICENSE_DEFINED","expected_profile":"djconnect-esp32","release_classes":[],"artifact_provenance_required":True}
             self.assertEqual({f["check_id"]:f["status"] for f in AUDIT.audit_offline(record, root)}["release.source_provenance"], "DRIFT")
+    def test_artifact_manifest_requires_source_and_digest(self):
+        with tempfile.TemporaryDirectory() as temp:
+            manifest = Path(temp) / "artifact.json"
+            manifest.write_text(json.dumps({"source_repository":"pcvantol/example","source_sha":"a" * 40}))
+            self.assertEqual(AUDIT.artifact_manifest_finding("sample", manifest)["status"], "DRIFT")
     def test_registry_rejects_duplicate_names(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "registry.json"; path.write_text(json.dumps({"schema_version":1,"repositories":[{"repository":"x"},{"repository":"x"}]}))

@@ -10,6 +10,7 @@ import re
 import subprocess
 import sys
 import hashlib
+from datetime import date
 from pathlib import Path
 
 STATUSES = {"PASS", "INTENTIONAL_DIFFERENCE", "DEFERRED", "OWNER_DECISION_REQUIRED", "DRIFT", "MISSING", "UNRESOLVED", "ERROR"}
@@ -44,15 +45,22 @@ def action_pins(repo, root):
             if not re.fullmatch(r"[0-9a-f]{40}", ref): mutable.append(f"{workflow.name}:{value}")
     return mutable
 
-def audit_offline(record, root):
+def deferred_exception_finding(record):
+    repo, exception = record["repository"], record.get("exception", {})
+    reason, expires_on = exception.get("reason"), exception.get("expires_on")
+    if not reason:
+        return finding(repo, "exception.deferred_migration", "explicit bounded exception", "missing reason", "UNRESOLVED", "HIGH")
+    if not expires_on:
+        return finding(repo, "exception.deferred_migration", "explicit bounded exception", reason, "DEFERRED", "INFORMATIONAL")
+    try:
+        expiry = date.fromisoformat(expires_on)
+    except ValueError:
+        return finding(repo, "exception.deferred_migration", "valid ISO-8601 expiry", expires_on, "UNRESOLVED", "HIGH")
+    return finding(repo, "exception.deferred_migration", "active bounded exception", f"{reason}; expires {expires_on}", "DEFERRED" if expiry >= date.today() else "DRIFT", "INFORMATIONAL")
+
+def basic_findings(record, path):
     repo, cls = record["repository"], record["governance_class"]
-    path = root / repo
     out = []
-    if cls == "DEFERRED_MIGRATION":
-        reason = record.get("exception", {}).get("reason")
-        return [finding(repo, "exception.deferred_migration", "explicit bounded exception", reason or "missing", "DEFERRED" if reason else "UNRESOLVED", "INFORMATIONAL")]
-    if not path.is_dir():
-        return [finding(repo, "repository.checkout", "local checkout", "missing", "MISSING", "HIGH", "provide checkout for offline audit")]
     out.append(finding(repo, "discoverability.readme", "README", "present" if exists(path / "README.md") else "missing", "PASS" if exists(path / "README.md") else "MISSING", "HIGH"))
     license_state = record["license_state"]
     license = exists(path / "LICENSE") or exists(path / "LICENSE.md")
@@ -62,6 +70,11 @@ def audit_offline(record, root):
     if security_needed:
         present = exists(path / "SECURITY.md")
         out.append(finding(repo, "security.policy", "SECURITY.md", "present" if present else "missing", "PASS" if present else "MISSING", "HIGH"))
+    return out
+
+def projection_findings(record, path):
+    repo, cls = record["repository"], record["governance_class"]
+    out = []
     projection = path / "docs/ai-development/GENERATED_PROJECTION.md"
     if cls in {"FULL_MANAGED_FIRST_CLASS", "LIGHTWEIGHT_COMPONENT_MANAGED"}:
         manifest = path / "docs/ai-development/projection-manifest.json"
@@ -90,6 +103,11 @@ def audit_offline(record, root):
             out.append(finding(repo, "ai_development.lightweight_adoption", "receipt and bootstrap", "present" if ok else "missing", "PASS" if ok else "MISSING", "HIGH"))
     else:
         out.append(finding(repo, "ai_development.projection", "not required", "absent" if not projection.exists() else "present", "INTENTIONAL_DIFFERENCE" if not projection.exists() else "DRIFT", "INFORMATIONAL"))
+    return out
+
+def repository_specific_findings(record, path, root):
+    repo, cls = record["repository"], record["governance_class"]
+    out = []
     if cls == "PARENT_GOVERNED_SUPPORT":
         parent = record.get("parent_authority")
         out.append(finding(repo, "distribution.source_authority", "declared parent/source authority", parent or "missing", "PASS" if parent else "DRIFT", "HIGH"))
@@ -104,6 +122,26 @@ def audit_offline(record, root):
         ok = '"source_repository": "${SOURCE_REPOSITORY}"' in text and '"source_sha": "${SOURCE_SHA}"' in text
         out.append(finding(repo, "release.source_provenance", "source repository and exact SHA in future manifest", "present" if ok else "missing", "PASS" if ok else "DRIFT", "HIGH"))
     return out
+
+def artifact_manifest_finding(repo, manifest):
+    """Validate an artifact receipt when a repository opts into this check."""
+    try:
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return finding(repo, "release.artifact_provenance", "valid artifact manifest", "unreadable manifest", "UNRESOLVED", "HIGH")
+    missing = [key for key in ("source_repository", "source_sha", "artifact_sha256") if not data.get(key)]
+    status = "PASS" if not missing and SHA.fullmatch(data["source_sha"]) else "DRIFT"
+    actual = "complete" if status == "PASS" else "missing/invalid: " + ", ".join(missing or ["source_sha"])
+    return finding(repo, "release.artifact_provenance", "source repository, source SHA and artifact digest", actual, status, "HIGH")
+
+def audit_offline(record, root):
+    repo, cls = record["repository"], record["governance_class"]
+    path = root / repo
+    if cls == "DEFERRED_MIGRATION":
+        return [deferred_exception_finding(record)]
+    if not path.is_dir():
+        return [finding(repo, "repository.checkout", "local checkout", "missing", "MISSING", "HIGH", "provide checkout for offline audit")]
+    return basic_findings(record, path) + projection_findings(record, path) + repository_specific_findings(record, path, root)
 
 def audit_online(record, organization):
     repo = record["repository"]
