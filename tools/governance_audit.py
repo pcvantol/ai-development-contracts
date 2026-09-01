@@ -72,30 +72,37 @@ def basic_findings(record, path):
         out.append(finding(repo, "security.policy", "SECURITY.md", "present" if present else "missing", "PASS" if present else "MISSING", "HIGH"))
     return out
 
+def projection_artifacts(path):
+    projection = path / "docs/ai-development/GENERATED_PROJECTION.md"
+    manifest = path / "docs/ai-development/projection-manifest.json"
+    extension_identity = ""
+    if manifest.is_file():
+        try:
+            extension_identity = json.loads(manifest.read_text(encoding="utf-8")).get("extension_identity", "")
+        except json.JSONDecodeError:
+            pass
+    extension_name = f"{extension_identity}.md"
+    extensions = [path / "docs/ai-development" / extension_name, path / "docs/development" / extension_name]
+    return projection, manifest, any(item.is_file() for item in extensions)
+
+def projection_digest_finding(repo, projection, manifest):
+    if not (manifest.is_file() and projection.is_file()):
+        return []
+    try:
+        expected_digest = json.loads(manifest.read_text(encoding="utf-8")).get("projection_file_digest")
+        actual_digest = hashlib.sha256(projection.read_bytes()).hexdigest()
+        return [finding(repo, "ai_development.projection_digest", "manifest digest matches projection", actual_digest, "PASS" if expected_digest == actual_digest else "DRIFT", "HIGH")]
+    except json.JSONDecodeError:
+        return [finding(repo, "ai_development.projection_digest", "valid manifest JSON", "invalid JSON", "UNRESOLVED", "HIGH")]
+
 def projection_findings(record, path):
     repo, cls = record["repository"], record["governance_class"]
     out = []
-    projection = path / "docs/ai-development/GENERATED_PROJECTION.md"
+    projection, manifest, extension_present = projection_artifacts(path)
     if cls in {"FULL_MANAGED_FIRST_CLASS", "LIGHTWEIGHT_COMPONENT_MANAGED"}:
-        manifest = path / "docs/ai-development/projection-manifest.json"
-        extension_identity = ""
-        if manifest.is_file():
-            try:
-                extension_identity = json.loads(manifest.read_text(encoding="utf-8")).get("extension_identity", "")
-            except json.JSONDecodeError:
-                extension_identity = ""
-        extension_name = f"{extension_identity}.md"
-        extensions = [path / "docs/ai-development" / extension_name, path / "docs/development" / extension_name]
-        needed = projection.is_file() and manifest.is_file() and any(item.is_file() for item in extensions)
+        needed = projection.is_file() and manifest.is_file() and extension_present
         out.append(finding(repo, "ai_development.projection", "projection, manifest and extension", "present" if needed else "missing artifact", "PASS" if needed else "MISSING", "HIGH"))
-        if manifest.is_file() and projection.is_file():
-            try:
-                expected_digest = json.loads(manifest.read_text(encoding="utf-8")).get("projection_file_digest")
-                actual_digest = hashlib.sha256(projection.read_bytes()).hexdigest()
-                valid = expected_digest == actual_digest
-                out.append(finding(repo, "ai_development.projection_digest", "manifest digest matches projection", actual_digest, "PASS" if valid else "DRIFT", "HIGH"))
-            except json.JSONDecodeError:
-                out.append(finding(repo, "ai_development.projection_digest", "valid manifest JSON", "invalid JSON", "UNRESOLVED", "HIGH"))
+        out.extend(projection_digest_finding(repo, projection, manifest))
         if cls == "LIGHTWEIGHT_COMPONENT_MANAGED":
             receipt = path / "docs/ai-development/AI_DEVELOPMENT_ADOPTION_RECEIPT.md"
             bootstrap = path / "BOOTSTRAP.md"
@@ -111,11 +118,23 @@ def repository_specific_findings(record, path, root):
     if cls == "PARENT_GOVERNED_SUPPORT":
         parent = record.get("parent_authority")
         out.append(finding(repo, "distribution.source_authority", "declared parent/source authority", parent or "missing", "PASS" if parent else "DRIFT", "HIGH"))
+    out.extend(check_producer_and_action_findings(record, path, root))
+    out.extend(firmware_provenance_findings(record, path))
+    return out
+
+def check_producer_and_action_findings(record, path, root):
+    repo = record["repository"]
+    out = []
     for producer in record.get("required_check_producers", []):
         present = (path / producer).is_file()
         out.append(finding(repo, "required_check.producer", producer, "present" if present else "missing", "PASS" if present else "DRIFT", "CRITICAL"))
     mutable = action_pins(repo, root)
     out.append(finding(repo, "actions.pinning", "immutable SHA pins", "; ".join(mutable) if mutable else "all external actions pinned", "DRIFT" if mutable else "PASS", "HIGH", "replace mutable tag or branch with immutable SHA"))
+    return out
+
+def firmware_provenance_findings(record, path):
+    repo = record["repository"]
+    out = []
     if record.get("artifact_provenance_required") and repo == "djconnect-esp32":
         workflow = path / ".github/workflows/release-firmware.yml"
         text = workflow.read_text(encoding="utf-8") if workflow.is_file() else ""
