@@ -22,9 +22,5 @@ jobs:
         run: python3 tools/materialize.py check --repository ai-development-contracts
       - name: Install the standalone TDE runtime
         run: python3 -m pip install --disable-pip-version-check technical-debt-engine-runtime==1.1.1
-      - name: Install the TDE code-size analyzer
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends --yes cloc
       - name: Produce central TDE evidence
-        run: tde assess --capability code-size .
+        run: tde assess --capability complexity .
