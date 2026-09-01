@@ -4,7 +4,7 @@ Do not edit; update the local extension or canonical contracts.
 
 - schema_version: `1`
 - source_repo: `pcvantol/ai-development-contracts`
-- source_commit: `5b35dcccede76ad676bdc274243cf477030e96d5`
+- source_commit: `ffae0e992e4d31c29a7e81196821e1b466965a21`
 - profile: `ai-development-contracts`
 - extension_identity: `AI_DEVELOPMENT_CONTRACTS_EXTENSION`
 - projection_digest: `34d04daa1668d5ee1288a22d77aa143fecf4e167cb7fdc443d4082cb3ed45d77`

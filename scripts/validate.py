@@ -16,6 +16,7 @@ EXPECTED = {
     "BRANCH_WORKTREE_CONTRACT", "VALIDATION_EVIDENCE_CONTRACT", "TDE_INTEGRATION_CONTRACT",
     "REPOSITORY_GOVERNANCE_CONTRACT", "PROJECTION_CONTRACT",
 }
+QUALIFICATION_SHA = "0" * 40
 
 def run(*args, ok=True):
     result = subprocess.run(args, cwd=ROOT, text=True, capture_output=True)
@@ -30,14 +31,15 @@ with tempfile.TemporaryDirectory(prefix="contracts-qualification-") as temporary
     temp = Path(temporary)
     for profile in PROFILES:
         first, second = temp / f"{profile}-first", temp / f"{profile}-second"
-        run(sys.executable, str(TOOL), "materialize", "--repository", profile, "--output", str(first), "--source-commit", "qualification-sha")
-        run(sys.executable, str(TOOL), "materialize", "--repository", profile, "--output", str(second), "--source-commit", "qualification-sha")
-        for filename in ("GENERATED_PROJECTION.md", "projection-manifest.json"):
+        run(sys.executable, str(TOOL), "materialize", "--repository", profile, "--output", str(first), "--source-commit", QUALIFICATION_SHA)
+        run(sys.executable, str(TOOL), "materialize", "--repository", profile, "--output", str(second), "--source-commit", QUALIFICATION_SHA)
+        for filename in ("GENERATED_PROJECTION.md", "projection-manifest.json", "validate_projection.py"):
             a = (first / "docs" / "ai-development" / filename).read_bytes()
             b = (second / "docs" / "ai-development" / filename).read_bytes()
             if a != b:
                 raise SystemExit(f"nondeterministic {profile} {filename}")
-        run(sys.executable, str(TOOL), "check", "--repository", profile, "--output", str(first), "--source-commit", "qualification-sha")
+        run(sys.executable, str(TOOL), "check", "--repository", profile, "--output", str(first), "--source-commit", QUALIFICATION_SHA)
+        run(sys.executable, str(first / "docs" / "ai-development" / "validate_projection.py"), "--profile", profile, "--source-commit", QUALIFICATION_SHA, "--extension-identity", PROFILES[profile])
 
         projection = first / "docs" / "ai-development" / "GENERATED_PROJECTION.md"
         projection.write_text(projection.read_text() + "manual change\n")

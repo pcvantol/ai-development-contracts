@@ -33,6 +33,7 @@ def render(profile, commit):
     manifest = {"schema_version":"1","source_repo":"pcvantol/ai-development-contracts","source_commit":commit,"profile":profile,"contracts":files,"extension_identity":extension,"projection_digest":digest,"materializer_version":VERSION}
     body = "# Generated AI-development projection\n\nDo not edit; update the local extension or canonical contracts.\n\n" + "\n".join(f"- {key}: `{value}`" for key, value in manifest.items() if key != "contracts") + "\n\n"
     for name in files: body += source[name] + "\n"
+    manifest["projection_file_digest"] = hashlib.sha256(body.encode()).hexdigest()
     return body, manifest
 
 def target(output): return output / "docs" / "ai-development"
@@ -42,6 +43,7 @@ def materialize(profile, output, commit):
     target(output).mkdir(parents=True, exist_ok=True)
     (target(output) / "GENERATED_PROJECTION.md").write_text(body)
     (target(output) / "projection-manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+    (target(output) / "validate_projection.py").write_text((ROOT / "tools" / "projection_validator.py").read_text())
 
 def check(profile, output, source_commit=None):
     manifest = json.loads((target(output) / "projection-manifest.json").read_text())
@@ -49,6 +51,7 @@ def check(profile, output, source_commit=None):
         raise SystemExit("undeclared source revision")
     body, expected = render(profile, manifest["source_commit"])
     if manifest != expected or (target(output) / "GENERATED_PROJECTION.md").read_text() != body: raise SystemExit("projection drift")
+    if (target(output) / "validate_projection.py").read_text() != (ROOT / "tools" / "projection_validator.py").read_text(): raise SystemExit("projection validator drift")
 
 parser = argparse.ArgumentParser(); parser.add_argument("command", choices=("materialize", "check")); parser.add_argument("--repository", required=True); parser.add_argument("--output", type=Path, default=ROOT); parser.add_argument("--source-commit")
 args = parser.parse_args()
