@@ -18,6 +18,10 @@ jobs:
           python-version: '3.11'
       - name: Validate contracts, profiles, projections and drift canaries
         run: python3 scripts/validate.py
+      - name: Validate governance registry and read-only auditor
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          python3 tools/governance_audit.py check --registry governance/estate.json --root .. --repository ai-development-contracts
       - name: Ensure generated self projection is committed and current
         run: python3 tools/materialize.py check --repository ai-development-contracts
       - name: Install the standalone TDE runtime
