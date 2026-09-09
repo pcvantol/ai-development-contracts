@@ -12,9 +12,9 @@
   "extension_identity": "AI_DEVELOPMENT_CONTRACTS_EXTENSION",
   "materializer_version": "1",
   "profile": "ai-development-contracts",
-  "projection_digest": "34d04daa1668d5ee1288a22d77aa143fecf4e167cb7fdc443d4082cb3ed45d77",
-  "projection_file_digest": "59190211040a2df50b011cff51489f46c3cb59f9d1bcf929b53a67ad753d1f80",
+  "projection_digest": "6f77e0a7cf5d641c753dbcfde867f530bf3aaeb7a9da77be3380943e43f4f0c1",
+  "projection_file_digest": "b67a3ba848e2d4efbe3842f0f72879cc6d3320a7c27f235425d8652de7314404",
   "schema_version": "1",
-  "source_commit": "ffae0e992e4d31c29a7e81196821e1b466965a21",
+  "source_commit": "030a411e74bf749dd6d9aef9342caf5b17efc078",
   "source_repo": "pcvantol/ai-development-contracts"
 }
